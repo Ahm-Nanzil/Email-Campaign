@@ -39,6 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+
         $mail->Subject = "Boost Your Online Presence with a Professional Website 🌐";
         $mail->Body = $emailBody;
         $mail->AltBody = strip_tags($emailBody);
