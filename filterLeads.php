@@ -31,8 +31,10 @@ if (($handle = fopen($inputFile, 'r')) !== FALSE) {
     
     fclose($handle);
     fclose($outputHandle);
-
+    
     echo "New unique leads have been added to $outputFile.\n";
+    header("Location: index.php");
+    exit;
 } else {
     echo "Unable to open $inputFile.\n";
 }

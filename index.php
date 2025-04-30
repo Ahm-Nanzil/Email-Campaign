@@ -1,16 +1,13 @@
 <?php
-/**
- * Automatic Email Sender
- * Sends emails to 400 clients at a time from clients.csv
- * Tracks progress and resumes from where it left off
- */
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 // Configuration 
-$batchSize = 4;  // Number of emails to send per batch
+$batchSize = 470;  // Number of emails to send per batch
 $csvFile = 'clients.csv';
 $trackingFile = 'email_tracking.json';
-$emailTemplate = 'emailbody.html'; // Using your existing email template
+$emailTemplate = 'emailbody.html';
+
 
 // Initialize tracking data
 function initializeTrackingData() {
@@ -434,6 +431,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__)) {
         <div class="stats">
             <h2>Campaign Status</h2>
             <p><strong>Total Clients:</strong> <?php echo $totalRows; ?></p>
+            <p><strong>Batch Size:</strong> <?php echo $batchSize; ?></p>
             <p><strong>Emails Sent:</strong> <?php echo $tracking['total_processed']; ?></p>
             <p><strong>Next Batch Starting At:</strong> <?php echo $tracking['current_index']; ?></p>
             <p><strong>Last Batch Sent:</strong> <?php echo $tracking['last_batch_time'] ? $tracking['last_batch_time'] : 'Never'; ?></p>
@@ -447,7 +445,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__)) {
         <!-- Use form for non-JS environments -->
         <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="emailForm">
             <input type="hidden" name="action" value="sendEmails">
-            <button type="submit" id="sendBatch">Send Next Batch (<?php echo $batchSize; ?> Emails)</button>
+            <button type="submit" id="sendBatch">Send Next Batch</button>
             <a href="manual.php" style="text-decoration: none; color: white;">
                 <button type="button" style="background-color: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px;">
                     Manual
@@ -457,13 +455,18 @@ if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__)) {
             <a href="resetCampaign.php" class="reset" id="resetCampaign" onclick="return confirm('Are you sure you want to reset the entire campaign? This will mark all emails as unsent.');">
                 <button type="button" class="reset">Reset Campaign</button>
             </a>
+            <a href="filterLeads.php" style="text-decoration: none; color: white;">
+                <button type="button" style="background-color: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                    Filter Leads
+                </button>
+            </a>
         </form>
         
         <div id="result"></div>
         
         <div class="csv-info">
             <h3>CSV File Information</h3>
-            <p>Make sure your clients.csv file has the following columns:</p>
+            <p>Make sure clients.csv file has the following columns:</p>
             <ul>
                 <li>Email - Client email address</li>
                 <li>Customer Name - Client's name</li>
@@ -474,7 +477,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__)) {
             <p><strong>Note:</strong> The system will automatically update the "Sent" column as emails are processed.</p>
         </div>
         
-        <a href="index.php" class="back-link">Back to Home</a>
+        <p class="back-link">Signed by Ahm Nanzil</p>
     </div>
     
     <script>
